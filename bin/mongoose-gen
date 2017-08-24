@@ -199,6 +199,7 @@ function runNonInteractiveMode(path) {
     );
 }
 
+
 /**
  * Ask a question in the console and waits for a response
  * if the answer is invalid, the question is recalled
