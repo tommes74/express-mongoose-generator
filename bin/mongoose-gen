@@ -17,11 +17,11 @@ var rl = readline.createInterface({
     output: process.stdout
 });
 
-var ALLOWED_FIELDS_TYPES = ['string', 'number', 'date', 'boolean', 'array', 'objectId', 'rString', 'rNumber', 'rDate', 'rBoolean'];
+var ALLOWED_FIELDS_TYPES = ['string', 'number', 'date', 'boolean', 'array', 'objectId', 'rstring', 'rnumber', 'rdate', 'rboolean'];
 var ALLOWED_REST_ARGUMENT = {'YES': 'yes', 'NO': 'no'};
 var ALLOWED_FILE_TREE_ARGUMENT = {'TYPE': 't', 'MODULE': 'm'};
 var CLI_PHRASES = {
-    AVAILABLE_TYPE: 'Available types : string, number, date, boolean, array, objectId, rString, rNumber, rDate, rBoolean',
+    AVAILABLE_TYPE: 'Available types : string, number, date, boolean, array, objectId, rstring, rnumber, rdate, rboolean',
     QUESTION_MODEL_NAME: 'Model Name : ',
     QUESTION_FIELD_NAME: 'Field Name (press <return> to stop adding fields) : ',
     QUESTION_FIELD_TYPE: 'Field Type [string] : ',
@@ -323,6 +323,7 @@ function isFieldValid(fieldName, fieldType) {
  */
 function formatFieldsParamInArray(fields) {
     var arrayFields = fields.split(',');
+    arrayFields = arrayFields.sort();
     var result = [];
 
     var err = arrayFields.every(function (field) {

@@ -5,13 +5,63 @@ var {modelName} = require({modelPath});
  *
  * @description :: Server-side logic for managing {pluralName}.
  */
-module.exports = {
+ module.exports = {
+
+    search: function(req, res) {
+        var terms = req.params.terms;
+        
+        var rawQuery = {
+            from: 0,
+            size: 25,
+            query: { query_string: { "query":terms } } 
+        };
+
+        {modelName}.esSearch(rawQuery, { hydrate:false }, function(err,results) {
+            if (err) {
+                return res.status(500).json({
+                    message: 'Error when searching {name}.',
+                    error: err
+                });
+            } 
+            return res.json({ terms:terms, total:results.hits.total, max_score: results.hits.max_score, authUsers:results.hits.hits });
+        });
+
+    },
+
+    bootstrap: function(req, res) {
+        {modelName}.createMapping(function(err, mapping){  
+          if(err){
+            console.log('error creating mapping (you can safely ignore this)');
+            console.log(err);
+          }else{
+            console.log('mapping created for {modelName}!');
+            console.log(mapping);
+            {modelName}.synchronize(function(err, result) {
+
+            });
+          }
+          return res.status(200);
+        });
+    },
 
     /**
      * {controllerName}.list()
      */
-    list: function (req, res) {
-        {modelName}.find(function (err, {pluralName}) {
+     list: function (req, res) {
+        var order = '';
+        if(req.query.order == 'desc') order = '-';
+
+        var query = {};
+        var options = {
+            // select: '-password -__v -email', 
+            offset: +req.query.offset, 
+            limit: +req.query.max,
+            // populate: 'roles',
+            lean: false,
+            sort: order + req.query.sort
+        };
+
+        {modelName}.paginate(query, options, function (err, {pluralName}) {
             if (err) {
                 return res.status(500).json({
                     message: 'Error when getting {name}.',
@@ -20,12 +70,14 @@ module.exports = {
             }
             return res.json({pluralName});
         });
+
+
     },
 
     /**
      * {controllerName}.show()
      */
-    show: function (req, res) {
+     show: function (req, res) {
         var id = req.params.id;
         {modelName}.findOne({_id: id}, function (err, {name}) {
             if (err) {
@@ -46,9 +98,9 @@ module.exports = {
     /**
      * {controllerName}.create()
      */
-    create: function (req, res) {
+     create: function (req, res) {
         var {name} = new {modelName}({{createFields}
-        });
+    });
 
         {name}.save(function (err, {name}) {
             if (err) {
@@ -62,8 +114,8 @@ module.exports = {
     },
 
     /**
-     * {controllerName}.update()
-     */
+    * {controllerName}.update()
+    */
     update: function (req, res) {
         var id = req.params.id;
         {modelName}.findOne({_id: id}, function (err, {name}) {
@@ -94,8 +146,8 @@ module.exports = {
     },
 
     /**
-     * {controllerName}.remove()
-     */
+    * {controllerName}.remove()
+    */
     remove: function (req, res) {
         var id = req.params.id;
         {modelName}.findByIdAndRemove(id, function (err, {name}) {

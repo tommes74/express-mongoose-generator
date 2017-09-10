@@ -8,6 +8,11 @@ It’s a mongoose model, REST controller and Express router code generator for E
 $ npm install -g express-mongoose-generator
 ```
 
+## Installation local
+```bash
+$ sudo npm install -g ~/git/express-mongoose-generator
+```
+
 ## Usage
 ### Non-Interactive mode
 Generates a Mongoose model, a REST controller and Express router :

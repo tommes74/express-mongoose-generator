@@ -1,14 +1,14 @@
 module.exports = {
-	rString: {
+	rstring: {
 		name: '{ type: String, required: true }'
 	},
-	rNumber: {
+	rnumber: {
 		name: '{ type: Number, required: true }'
 	},
-	rDate: {
+	rdate: {
 		name: '{ type: Date, required: true }'
 	},
-	rBoolean: {
+	rboolean: {
 		name: '{ type: Boolean, required: true }'
 	},
 	string: {
