@@ -54,8 +54,8 @@ var {modelName} = require({modelPath});
         var query = {};
         var options = {
             // select: '-password -__v -email', 
-            offset: +req.query.offset, 
-            limit: +req.query.max,
+            offset: +req.query.offset ? +req.query.offset : 0, 
+            limit: +req.query.max ? +req.query.max : 20,
             // populate: 'roles',
             lean: false,
             sort: order + req.query.sort
